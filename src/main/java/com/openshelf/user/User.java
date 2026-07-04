@@ -6,9 +6,7 @@ import com.openshelf.shared.Preconditions;
 /**
  * Base class for all library users.
  *
- * <p>
- * Extend this class to create concrete user types (Member, Librarian,
- * Administrator). Each
+ * <p>Extend this class to create concrete user types (Member, Librarian, Administrator). Each
  * subclass must declare its {@link UserRole}.
  */
 public abstract class User {
@@ -23,8 +21,8 @@ public abstract class User {
   /**
    * Creates a User.
    *
-   * @param id    unique identifier (no whitespace allowed)
-   * @param name  full name (max {@value #MAX_NAME_LENGTH} characters)
+   * @param id unique identifier (no whitespace allowed)
+   * @param name full name (max {@value #MAX_NAME_LENGTH} characters)
    * @param email valid email address
    */
   protected User(String id, String name, String email) {
