@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+  <!-- Constructor injection intentionally shares mutable repository dependencies.
+       Copying repositories would disconnect the service from the application's storage. -->
+  <Match>
+    <Class name="com.openshelf.application.service.LoanService"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+  <!-- The application owns and configures the shared DataSource; copying it would
+       break connection pooling and dependency injection. -->
+  <Match>
+    <Class name="com.openshelf.infrastructure.postgres.PostgresBookRepository"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+</FindBugsFilter>

@@ -13,6 +13,9 @@ services:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
+      FLYWAY_URL: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+      FLYWAY_USER: ${DB_USER}
+      FLYWAY_PASSWORD: ${DB_PASSWORD}
     # depends_on eliminado: en la etapa 1 (in-memory) no se necesita postgres.
     # Levantar postgres por separado con: docker compose up -d postgres
 
@@ -31,6 +34,23 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  integration-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    profiles: [integration]
+    working_dir: /workspace
+    command: ["mvn", "-B", "-Ppostgres-it", "verify"]
+    volumes:
+      - .:/workspace
+      - maven-cache:/root/.m2
+      - /var/run/docker.sock:/var/run/docker.sock
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      DOCKER_HOST: unix:///var/run/docker.sock
+      TESTCONTAINERS_HOST_OVERRIDE: host.docker.internal
 
 volumes:
   maven-cache:
